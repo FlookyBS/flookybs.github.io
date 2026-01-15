@@ -1,3 +1,5 @@
+console.log("DOM i85g-2:", document.getElementById("i85g-2"));
+
 async function autoplayRandomTrack() {
   try {
     const res = await fetch("tracks.json");
