@@ -5,22 +5,25 @@ audio.volume = 1.0;
 audio.muted = true;        // REQUIRED for autoplay
 audio.preload = "auto";
 
-async function autoplayRandomTrack() {
+async function startAudio() {
   try {
     const res = await fetch("tracks.json");
     const tracks = await res.json();
-
     const track = tracks[Math.floor(Math.random() * tracks.length)];
 
     audio.src = track.file;
+    audio.muted = false;
 
-    nowPlaying.textContent = `Now playing: ${track.title} — ${track.artist}\n(click on the site to play)`;
+    await audio.play();
 
-    await audio.play(); // WILL autoplay (muted)
-  } catch (err) {
-    console.error(err);
-    nowPlaying.textContent = "Failed to load tracks.";
+    nowPlaying.textContent =
+      `Now playing: ${track.title} — ${track.artist}`;
+  } catch (e) {
+    console.error(e);
   }
+
+  document.removeEventListener("touchstart", startAudio);
+  document.removeEventListener("click", startAudio);
 }
 
 // Unmute permanently after first interaction
