@@ -1,4 +1,9 @@
-console.log("DOM i85g-2:", document.getElementById("i85g-2"));
+const nowPlaying = document.getElementById("i85g-2");
+
+let audio = new Audio();
+audio.volume = 1.0;
+audio.muted = true;        // REQUIRED for autoplay
+audio.preload = "auto";
 
 async function autoplayRandomTrack() {
   try {
@@ -7,19 +12,28 @@ async function autoplayRandomTrack() {
 
     const track = tracks[Math.floor(Math.random() * tracks.length)];
 
-    const audio = new Audio(track.file);
-    audio.autoplay = true;
-    audio.volume = 1.0;
+    audio.src = track.file;
 
-    // WRITE TO HTML
-    const nowPlaying = document.getElementById("i85g-2");
     nowPlaying.textContent = `Now playing: ${track.title} — ${track.artist}`;
 
-    audio.play().catch(() => {});
+    await audio.play(); // WILL autoplay (muted)
   } catch (err) {
-    document.getElementById("i85g-2").textContent =
-      "Failed to load tracks.";
+    console.error(err);
+    nowPlaying.textContent = "Failed to load tracks.";
   }
 }
+
+// Unmute permanently after first interaction
+function unlockAudio() {
+  audio.muted = false;
+  document.removeEventListener("click", unlockAudio);
+  document.removeEventListener("keydown", unlockAudio);
+  document.removeEventListener("touchstart", unlockAudio);
+}
+
+// One interaction = full autoplay unlocked
+document.addEventListener("click", unlockAudio);
+document.addEventListener("keydown", unlockAudio);
+document.addEventListener("touchstart", unlockAudio);
 
 window.addEventListener("load", autoplayRandomTrack);
