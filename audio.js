@@ -14,7 +14,7 @@ async function autoplayRandomTrack() {
 
     audio.src = track.file;
 
-    nowPlaying.textContent = `Now playing: ${track.title} — ${track.artist}`;
+    nowPlaying.textContent = `Now playing: ${track.title} — ${track.artist}\n(click on the site to play)`;
 
     await audio.play(); // WILL autoplay (muted)
   } catch (err) {
