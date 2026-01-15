@@ -3,10 +3,13 @@ const nowPlaying = document.getElementById("i85g-2");
 const audio = new Audio();
 audio.volume = 1.0;
 audio.preload = "auto";
+let started = false;
 
 async function startAudio() {
+  if (started) return;
+
   try {
-    const res = await fetch("tracks.json");
+    const res = await fetch("tracks.json", { cache: "no-store" });
     const tracks = await res.json();
     const track = tracks[Math.floor(Math.random() * tracks.length)];
 
@@ -15,17 +18,20 @@ async function startAudio() {
 
     await audio.play();
 
+    started = true;
+
     nowPlaying.textContent =
       `Now playing: ${track.title} — ${track.artist}`;
-  } catch (e) {
-    console.error(e);
-    nowPlaying.textContent = "Failed to start audio.";
-  }
 
-  document.removeEventListener("touchstart", startAudio);
-  document.removeEventListener("click", startAudio);
+    document.removeEventListener("touchstart", startAudio);
+    document.removeEventListener("click", startAudio);
+
+  } catch (e) {
+    console.error("Audio start failed:", e);
+    // DO NOT remove listeners → allow retry
+  }
 }
 
 // FIRST interaction starts audio
-document.addEventListener("touchstart", startAudio, { once: true });
-document.addEventListener("click", startAudio, { once: true });
+document.addEventListener("touchstart", startAudio);
+document.addEventListener("click", startAudio);
