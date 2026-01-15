@@ -38,5 +38,3 @@ function unlockAudio() {
 document.addEventListener("click", unlockAudio);
 document.addEventListener("keydown", unlockAudio);
 document.addEventListener("touchstart", unlockAudio);
-
-window.addEventListener("load", autoplayRandomTrack);
