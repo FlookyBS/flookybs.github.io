@@ -10,7 +10,7 @@ async function autoplayRandomTrack() {
     audio.volume = 1.0;
 
     // WRITE TO HTML
-    const nowPlaying = document.getElementById("now-playing");
+    const nowPlaying = document.getElementById("i85g-2");
     nowPlaying.textContent = `Now playing: ${track.title} — ${track.artist}`;
 
     audio.play().catch(() => {});
