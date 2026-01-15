@@ -1,8 +1,7 @@
 const nowPlaying = document.getElementById("i85g-2");
 
-let audio = new Audio();
+const audio = new Audio();
 audio.volume = 1.0;
-audio.muted = true;        // REQUIRED for autoplay
 audio.preload = "auto";
 
 async function startAudio() {
@@ -20,21 +19,13 @@ async function startAudio() {
       `Now playing: ${track.title} — ${track.artist}`;
   } catch (e) {
     console.error(e);
+    nowPlaying.textContent = "Failed to start audio.";
   }
 
   document.removeEventListener("touchstart", startAudio);
   document.removeEventListener("click", startAudio);
 }
 
-// Unmute permanently after first interaction
-function unlockAudio() {
-  audio.muted = false;
-  document.removeEventListener("click", unlockAudio);
-  document.removeEventListener("keydown", unlockAudio);
-  document.removeEventListener("touchstart", unlockAudio);
-}
-
-// One interaction = full autoplay unlocked
-document.addEventListener("click", unlockAudio);
-document.addEventListener("keydown", unlockAudio);
-document.addEventListener("touchstart", unlockAudio);
+// FIRST interaction starts audio
+document.addEventListener("touchstart", startAudio, { once: true });
+document.addEventListener("click", startAudio, { once: true });
