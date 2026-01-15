@@ -15,7 +15,7 @@ async function autoplayRandomTrack() {
 
     audio.play().catch(() => {});
   } catch (err) {
-    document.getElementById("now-playing").textContent =
+    document.getElementById("i85g-2").textContent =
       "Failed to load tracks.";
   }
 }
